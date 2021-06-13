@@ -1,18 +1,18 @@
 
 provider "aws" {
-	region = "us-east-1"
+	region = "us-east-2"
 }
 
 terraform {
   backend "s3" {
     bucket = "terraform-backend-spovedd"
     key    = "terraform.tfstate"
-    region = "us-east-1"
+    region = "us-east-2"
   }
 }
 
 resource "aws_vpc" "default" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = "10.1.0.0/16"
   enable_dns_hostnames = true
 
   
@@ -20,8 +20,8 @@ resource "aws_vpc" "default" {
 
 resource "aws_subnet" "public-subnet" {
   vpc_id = "${aws_vpc.default.id}"
-  cidr_block = "10.0.1.0/24"
-  availability_zone = "us-east-1a"
+  cidr_block = "10.1.0.1/20 "
+  availability_zone = "us-east-2a"
 
 }
 
@@ -69,7 +69,7 @@ resource "aws_security_group" "sgweb" {
 }
 
 resource "aws_instance" "web" {
-	ami = "ami-032930428bf1abbff"
+	ami = "ami-0b59bfac6be064b78"
 	instance_type = "t2.micro"
 	subnet_id = "${aws_subnet.public-subnet.id}"
 	vpc_security_group_ids = ["${aws_security_group.sgweb.id}"]
